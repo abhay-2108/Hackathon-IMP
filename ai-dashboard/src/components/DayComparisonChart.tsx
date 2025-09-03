@@ -25,6 +25,11 @@ export function DayComparisonChart({
         if (chartRef.current) {
             chartRef.current.destroy();
         }
+        // Fix canvas size to parent width and fixed height
+        const parent = canvasRef.current.parentElement as HTMLElement | null;
+        const width = parent?.clientWidth ?? 800;
+        canvasRef.current.width = width;
+        canvasRef.current.height = 320;
         chartRef.current = new ChartGlobal(canvasRef.current.getContext("2d"), {
             type: "bar",
             data: {
@@ -43,7 +48,7 @@ export function DayComparisonChart({
                 ],
             },
             options: {
-                responsive: true,
+                responsive: false,
                 maintainAspectRatio: false,
                 plugins: { legend: { position: "top" as const } },
                 scales: {
@@ -54,12 +59,12 @@ export function DayComparisonChart({
         });
         return () => chartRef.current?.destroy();
     }, [
-        labels.join(","),
+        labels.join(""),
         day1Label,
         day2Label,
-        day1Values.join(","),
-        day2Values.join(","),
+        day1Values.join(""),
+        day2Values.join(""),
     ]);
 
-    return <canvas ref={canvasRef} className="w-full h-64" />;
+    return <canvas ref={canvasRef} className="block w-full h-[320px]" />;
 }
