@@ -33,9 +33,9 @@ export default function PatientDetailPage() {
                 <Header />
                 <main className="p-4 md:p-6 lg:p-8 max-w-[1400px] mx-auto">
                     <button
-                        onClick={() => router.push("/patients")}
+                        onClick={() => router.push("/")}
                         className="text-blue-600 hover:underline">
-                        Back to Cohort
+                        Back to Dashboard
                     </button>
                     <div className="mt-8 text-gray-600">Patient not found.</div>
                 </main>
@@ -48,10 +48,10 @@ export default function PatientDetailPage() {
             <Header />
             <main className="p-4 md:p-6 lg:p-8 max-w-[1400px] mx-auto">
                 <button
-                    onClick={() => router.push("/patients")}
+                    onClick={() => router.push("/")}
                     className="text-gray-500 hover:text-gray-700 mb-6 flex items-center space-x-2">
                     <i className="fas fa-arrow-left"></i>
-                    <span>Back to Cohort</span>
+                    <span>Back to Dashboard</span>
                 </button>
                 <div className="flex flex-col md:flex-row space-y-6 md:space-y-0 md:space-x-8">
                     <div className="md:w-1/3">
