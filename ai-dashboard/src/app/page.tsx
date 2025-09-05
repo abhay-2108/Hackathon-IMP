@@ -1228,7 +1228,9 @@ export default function Home() {
                                         </ul>
                                     </div>
                                     <div className="bg-white rounded-xl shadow p-4 mt-4">
-                                        <h5 class="font-semibold text-gray-800 mb-2">Recommended Next Actions</h5>
+                                        <h5 className="font-semibold text-gray-800 mb-2">
+                                            Recommended Next Actions
+                                        </h5>
                                         <ul
                                             id="detail-actions"
                                             className="text-gray-600 space-y-2 text-sm"></ul>
