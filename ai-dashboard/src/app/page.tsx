@@ -34,9 +34,6 @@ export default function Home() {
                 const detailScore = document.getElementById("detail-score");
                 const detailActions = document.getElementById("detail-actions");
                 const detailDrivers = document.getElementById("detail-drivers");
-                const compareDaysButton = document.getElementById(
-                    "compare-days-button"
-                );
                 const compareDay1Input =
                     document.getElementById("compare-day1-input");
                 const compareDay2Input =
@@ -65,11 +62,9 @@ export default function Home() {
                 const detailAge = document.getElementById("detail-age");
                 const detailBloodGroup =
                     document.getElementById("detail-blood-group");
-                const detailHeight = document.getElementById("detail-height");
-                const detailWeight = document.getElementById("detail-weight");
                 const detailDisease = document.getElementById("detail-disease");
 
-                let selectedPatients = new Set();
+                const selectedPatients = new Set();
                 let myChart;
 
                 const patients = [
@@ -604,7 +599,7 @@ export default function Home() {
                     const plateletData = labels.map(
                         (key) => data[key].platelets
                     );
-                    // @ts-ignore - Chart is provided by CDN
+                    // @ts-expect-error - Chart is provided by CDN
                     myChart = new Chart(
                         document
                             .getElementById("trends-chart")
@@ -925,7 +920,7 @@ export default function Home() {
                         "hemoglobin",
                     ];
                     const labels = metrics.map((m) => m.replace(/_/g, " "));
-                    // @ts-ignore - Chart comes from CDN
+                    // @ts-expect-error - Chart comes from CDN
                     dayComparisonChart = new Chart(
                         document
                             .getElementById("day-comparison-chart")
@@ -1133,8 +1128,7 @@ export default function Home() {
                         </h2>
                         <div className="flex items-center justify-between mb-4">
                             <p className="text-gray-500 text-sm">
-                                Select patients for comparison and click
-                                "Compare".
+                                Select patients for comparison and click &quot;Compare&quot;.
                             </p>
                             <button
                                 id="compare-button"
