@@ -1254,20 +1254,20 @@ export default function Home() {
                                     <h3 className="font-bold text-gray-800 mb-4">
                                         Patient Charts
                                     </h3>                                    
-                                    <div class="flex flex-wrap items-center justify-between border-b border-gray-200 mb-4">
-                                        <div class="flex space-x-2">
-                                            <button data-chart="trends" class="chart-select-button py-2 px-4 text-sm font-medium text-gray-500 hover:text-indigo-600 hover:bg-indigo-50 rounded-t-md transition-colors">Vitals Trend</button>
-                                            <button data-chart="blood-cell" class="chart-select-button py-2 px-4 text-sm font-medium text-gray-500 hover:text-indigo-600 hover:bg-indigo-50 rounded-t-md transition-colors">Blood Counts</button>
-                                            <button data-chart="lab-results" class="chart-select-button py-2 px-4 text-sm font-medium text-gray-500 hover:text-indigo-600 hover:bg-indigo-50 rounded-t-md transition-colors">Lab Results</button>
+                                    <div className="flex flex-wrap items-center justify-between border-b border-gray-200 mb-4">
+                                        <div className="flex space-x-2">
+                                            <button data-chart="trends" className="chart-select-button py-2 px-4 text-sm font-medium text-gray-500 hover:text-indigo-600 hover:bg-indigo-50 rounded-t-md transition-colors">Vitals Trend</button>
+                                            <button data-chart="blood-cell" className="chart-select-button py-2 px-4 text-sm font-medium text-gray-500 hover:text-indigo-600 hover:bg-indigo-50 rounded-t-md transition-colors">Blood Counts</button>
+                                            <button data-chart="lab-results" className="chart-select-button py-2 px-4 text-sm font-medium text-gray-500 hover:text-indigo-600 hover:bg-indigo-50 rounded-t-md transition-colors">Lab Results</button>
                                         </div>
-                                        <div id="trends-period-selector" class="flex space-x-2 mb-2 md:mb-0">
-                                            <button data-days="90" class="trends-period-button bg-blue-600 text-white px-3 py-1 text-xs font-semibold rounded-md hover:bg-blue-700 transition-colors">90D</button>
-                                            <button data-days="60" class="trends-period-button bg-gray-200 text-gray-800 px-3 py-1 text-xs font-semibold rounded-md hover:bg-gray-300 transition-colors">60D</button>
-                                            <button data-days="30" class="trends-period-button bg-gray-200 text-gray-800 px-3 py-1 text-xs font-semibold rounded-md hover:bg-gray-300 transition-colors">30D</button>
-                                            <button data-days="7" class="trends-period-button bg-gray-200 text-gray-800 px-3 py-1 text-xs font-semibold rounded-md hover:bg-gray-300 transition-colors">7D</button>
+                                        <div id="trends-period-selector" className="flex space-x-2 mb-2 md:mb-0">
+                                            <button data-days="90" className="trends-period-button bg-blue-600 text-white px-3 py-1 text-xs font-semibold rounded-md hover:bg-blue-700 transition-colors">90D</button>
+                                            <button data-days="60" className="trends-period-button bg-gray-200 text-gray-800 px-3 py-1 text-xs font-semibold rounded-md hover:bg-gray-300 transition-colors">60D</button>
+                                            <button data-days="30" className="trends-period-button bg-gray-200 text-gray-800 px-3 py-1 text-xs font-semibold rounded-md hover:bg-gray-300 transition-colors">30D</button>
+                                            <button data-days="7" className="trends-period-button bg-gray-200 text-gray-800 px-3 py-1 text-xs font-semibold rounded-md hover:bg-gray-300 transition-colors">7D</button>
                                         </div>
                                     </div>
-                                    <div id="chart-container" class="relative h-[320px] w-full">
+                                    <div id="chart-container" className="relative h-[320px] w-full">
                                         {/* Canvas will be injected here */}
                                     </div>
                                 </div>
