@@ -6,29 +6,6 @@ import { Header } from "../../../components/Header";
 import { TrendsChart } from "../../../components/TrendsChart";
 import { DayComparisonChart } from "../../../components/DayComparisonChart";
 
-interface TrendData {
-    blood_pressure: number;
-    blood_glucose: number;
-    resting_heart_rate: number;
-}
-
-interface Patient {
-    id: string;
-    name: string;
-    age: number;
-    bloodGroup: string;
-    height: string;
-    weight: string;
-    disease: string;
-    riskScore: number;
-    trends: Record<string, TrendData>;
-    drivers: { factor: string; influence: string }[];
-}
-
-export function generateStaticParams() {
-    return patientsMock.map((patient) => ({ id: patient.id }));
-}
-
 export default function PatientDetailPage() {
     const params = useParams<{ id: string }>();
     const router = useRouter();
@@ -56,9 +33,9 @@ export default function PatientDetailPage() {
                 <Header />
                 <main className="p-4 md:p-6 lg:p-8 max-w-[1400px] mx-auto">
                     <button
-                        onClick={() => router.push("/patients")}
+                        onClick={() => router.push("/")}
                         className="text-blue-600 hover:underline">
-                        Back to Cohort
+                        Back to Dashboard
                     </button>
                     <div className="mt-8 text-gray-600">Patient not found.</div>
                 </main>
@@ -71,10 +48,10 @@ export default function PatientDetailPage() {
             <Header />
             <main className="p-4 md:p-6 lg:p-8 max-w-[1400px] mx-auto">
                 <button
-                    onClick={() => router.push("/patients")}
+                    onClick={() => router.push("/")}
                     className="text-gray-500 hover:text-gray-700 mb-6 flex items-center space-x-2">
                     <i className="fas fa-arrow-left"></i>
-                    <span>Back to Cohort</span>
+                    <span>Back to Dashboard</span>
                 </button>
                 <div className="flex flex-col md:flex-row space-y-6 md:space-y-0 md:space-x-8">
                     <div className="md:w-1/3">
@@ -172,8 +149,8 @@ export default function PatientDetailPage() {
                             </div>
                             {day1 &&
                             day2 &&
-                            patient.trends[day1] &&
-                            patient.trends[day2] ? (
+                            (patient as any).trends[day1] &&
+                            (patient as any).trends[day2] ? (
                                 <div className="w-full h-[320px]">
                                     <DayComparisonChart
                                         labels={[
@@ -188,14 +165,20 @@ export default function PatientDetailPage() {
                                             day2
                                         ).toLocaleDateString()}
                                         day1Values={[
-                                            patient.trends[day1].blood_pressure,
-                                            patient.trends[day1].blood_glucose,
-                                            patient.trends[day1].resting_heart_rate,
+                                            (patient as any).trends[day1]
+                                                .blood_pressure,
+                                            (patient as any).trends[day1]
+                                                .blood_glucose,
+                                            (patient as any).trends[day1]
+                                                .resting_heart_rate,
                                         ]}
                                         day2Values={[
-                                            patient.trends[day2].blood_pressure,
-                                            patient.trends[day2].blood_glucose,
-                                            patient.trends[day2].resting_heart_rate,
+                                            (patient as any).trends[day2]
+                                                .blood_pressure,
+                                            (patient as any).trends[day2]
+                                                .blood_glucose,
+                                            (patient as any).trends[day2]
+                                                .resting_heart_rate,
                                         ]}
                                     />
                                 </div>
@@ -213,15 +196,20 @@ export default function PatientDetailPage() {
                                 <button
                                     onClick={async () => {
                                         const vitals = Object.values(
-                                            patient.trends
+                                            (patient as any).trends
                                         ).slice(-7);
-                                        const drivers = patient.drivers
-                                            .map((d) => `${d.factor} (${d.influence})`)
+                                        const drivers = (patient as any).drivers
+                                            .map(
+                                                (d: any) =>
+                                                    `${d.factor} (${d.influence})`
+                                            )
                                             .join(", ");
                                         const prompt = `Act as a clinical AI assistant. Given the patient's data (age: ${
-                                            patient.age
-                                        }, disease: ${patient.disease}), recent vitals (${JSON.stringify(
-                                            vitals,
+                                            (patient as any).age
+                                        }, disease: ${
+                                            (patient as any).disease
+                                        }), recent vitals (${JSON.stringify(
+                                            vitals
                                         )}), and risk drivers (${drivers}), generate a concise, point-wise summary of their health status and the primary reasons for their elevated risk of deterioration in the next 90 days. Focus on actionable insights.`;
                                         alert(
                                             "Plug your Gemini API call here with prompt:\n\n" +
@@ -233,15 +221,26 @@ export default function PatientDetailPage() {
                                 </button>
                                 <button
                                     onClick={async () => {
-                                        const drivers = patient.drivers
-                                            .map((d) => `${d.factor} (${d.influence})`)
+                                        const drivers = (patient as any).drivers
+                                            .map(
+                                                (d: any) =>
+                                                    `${d.factor} (${d.influence})`
+                                            )
                                             .join(", ");
                                         const v = Object.values(
-                                            patient.trends
-                                        ).slice(-1)[0];
+                                            (patient as any).trends
+                                        ).slice(-1)[0] as any;
                                         const prompt = `Act as a healthcare consultant. Based on the patient's data (disease: ${
-                                            patient.disease
-                                        }, risk score: ${(patient.riskScore * 100).toFixed(0)}%), which includes a high risk score due to ${drivers}, and recent vitals of Blood Pressure: ${v.blood_pressure}, Blood Glucose: ${v.blood_glucose}, what are three actionable, specific interventions a care team should consider to mitigate the risk of deterioration in the next 90 days? Format the response as a bulleted list.`;
+                                            (patient as any).disease
+                                        }, risk score: ${(
+                                            (patient as any).riskScore * 100
+                                        ).toFixed(
+                                            0
+                                        )}%), which includes a high risk score due to ${drivers}, and recent vitals of Blood Pressure: ${
+                                            v.blood_pressure
+                                        }, Blood Glucose: ${
+                                            v.blood_glucose
+                                        }, what are three actionable, specific interventions a care team should consider to mitigate the risk of deterioration in the next 90 days? Format the response as a bulleted list.`;
                                         alert(
                                             "Plug your Gemini API call here with prompt:\n\n" +
                                                 prompt

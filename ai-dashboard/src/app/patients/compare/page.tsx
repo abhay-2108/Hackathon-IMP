@@ -26,10 +26,10 @@ export default function ComparePatientsPage() {
             <Header />
             <main className="p-4 md:p-6 lg:p-8 max-w-[1400px] mx-auto">
                 <button
-                    onClick={() => router.push("/patients")}
+                    onClick={() => router.push("/")}
                     className="text-gray-500 hover:text-gray-700 mb-6 flex items-center space-x-2">
                     <i className="fas fa-arrow-left"></i>
-                    <span>Back to Cohort</span>
+                    <span>Back to Dashboard</span>
                 </button>
                 <h2 className="text-2xl font-bold text-gray-800 mb-6">
                     Patient Comparison
