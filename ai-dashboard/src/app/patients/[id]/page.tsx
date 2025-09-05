@@ -25,6 +25,10 @@ interface Patient {
     drivers: { factor: string; influence: string }[];
 }
 
+export function generateStaticParams() {
+    return patientsMock.map((patient) => ({ id: patient.id }));
+}
+
 export default function PatientDetailPage() {
     const params = useParams<{ id: string }>();
     const router = useRouter();
