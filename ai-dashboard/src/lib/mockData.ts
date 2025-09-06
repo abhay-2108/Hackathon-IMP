@@ -1,7 +1,7 @@
 import { Patient } from "./types";
 
 export function generateMockTrendData(base = 100, deviation = 10) {
-    const data: any = {};
+    const data: Record<string, Record<string, number | string>> = {};
     for (let i = 89; i >= 0; i--) {
         const date = new Date();
         date.setDate(date.getDate() - i);

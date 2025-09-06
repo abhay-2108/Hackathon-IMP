@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useRef } from "react";
+import { Chart } from "chart.js";
 
 type Props = {
     labels: string[];
@@ -8,20 +9,20 @@ type Props = {
 };
 
 export function TrendsChart({ labels, bloodPressure, bloodGlucose }: Props) {
-    const canvasRef = useRef<HTMLCanvasElement | null>(null);
-    const chartRef = useRef<any>(null);
+    const canvasRef = useRef<HTMLCanvasElement>(null);
+    const chartRef = useRef<Chart | null>(null);
 
     useEffect(() => {
-        const ChartGlobal = (window as any).Chart;
-        if (!ChartGlobal || !canvasRef.current) return;
+        const ChartJS = (window as any).Chart as typeof Chart;
+        if (!ChartJS || !canvasRef.current) return;
         if (chartRef.current) {
             chartRef.current.destroy();
         }
         const parent = canvasRef.current.parentElement as HTMLElement | null;
         const width = parent?.clientWidth ?? 800;
         canvasRef.current.width = width;
-        canvasRef.current.height = 320;
-        chartRef.current = new ChartGlobal(canvasRef.current.getContext("2d"), {
+        canvasRef.current.height = 320;        
+        chartRef.current = new ChartJS(canvasRef.current.getContext("2d")!, {
             type: "line",
             data: {
                 labels,
@@ -67,7 +68,7 @@ export function TrendsChart({ labels, bloodPressure, bloodGlucose }: Props) {
             },
         });
         return () => chartRef.current?.destroy();
-    }, [labels.join(","), bloodPressure.join(","), bloodGlucose.join(",")]);
+    }, [labels, bloodPressure, bloodGlucose]);
 
     return <canvas ref={canvasRef} className="block w-full h-[320px]" />;
 }

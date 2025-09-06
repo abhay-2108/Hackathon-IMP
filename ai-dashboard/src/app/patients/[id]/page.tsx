@@ -1,6 +1,6 @@
 "use client";
 import { useMemo, useState, useEffect } from "react";
-import { useParams, useRouter } from "next/navigation";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { patientsMock } from "../../../lib/mockData";
 import { Header } from "../../../components/Header";
 import { TrendsChart } from "../../../components/TrendsChart";
@@ -149,8 +149,8 @@ export default function PatientDetailPage() {
                             </div>
                             {day1 &&
                             day2 &&
-                            (patient as any).trends[day1] &&
-                            (patient as any).trends[day2] ? (
+                            patient.trends[day1] &&
+                            patient.trends[day2] ? (
                                 <div className="w-full h-[320px]">
                                     <DayComparisonChart
                                         labels={[
@@ -164,6 +164,8 @@ export default function PatientDetailPage() {
                                         day2Label={new Date(
                                             day2
                                         ).toLocaleDateString()}
+                                        day1Values={ patient.trends[day1] ? Object.values(patient.trends[day1]).filter(v => typeof v === 'number') as number[] : []}
+                                        day2Values={ patient.trends[day2] ? Object.values(patient.trends[day2]).filter(v => typeof v === 'number') as number[] : []}
                                         day1Values={ patient.trends[day1] ? [
                                             patient.trends[day1]
                                                 .blood_pressure,
@@ -184,7 +186,7 @@ export default function PatientDetailPage() {
                                 </div>
                             ) : (
                                 <div className="text-sm text-gray-500">
-                                    Select two valid dates with data to compare.
+                                    Select two valid dates to compare.
                                 </div>
                             )}
                         </div>
@@ -195,10 +197,10 @@ export default function PatientDetailPage() {
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                                 <button
                                     onClick={async () => {
-                                        const vitals = Object.values(
-                                            (patient as any).trends
+                                        const vitals: Record<string, string | number>[] = Object.values(
+                                            patient.trends
                                         ).slice(-7);
-                                        const drivers = patient.drivers
+                                        const drivers: {factor: string, influence: string}[] = patient.drivers
                                             .map(
                                                 (d: any) =>
                                                     `${d.factor} (${d.influence})`
@@ -220,15 +222,15 @@ export default function PatientDetailPage() {
                                     ✨Generate Clinical Summary✨
                                 </button>
                                 <button
-                                    onClick={async () => {
-                                        const drivers = (patient as any).drivers
+                                    onClick={() => {
+                                        const drivers = patient.drivers
                                             .map(
                                                 (d: any) =>
                                                     `${d.factor} (${d.influence})`
                                             )
                                             .join(", ");
-                                        const v = Object.values(
-                                            (patient as any).trends
+                                        const v: Record<string, string | number> = Object.values(
+                                            patient.trends
                                         ).slice(-1)[0] as any;
                                         const prompt = `Act as a healthcare consultant. Based on the patient's data (disease: ${ 
                                             patient.disease

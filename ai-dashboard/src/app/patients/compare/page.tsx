@@ -99,9 +99,9 @@ export default function ComparePatientsPage() {
                                     <ul className="space-y-2">
                                         {(() => {
                                             if (!date1 || !date2 || !p)
-                                                return null;
-                                            const d1 = p.trends[date1];
-                                            const d2 = p.trends[date2];
+                                                return <li className="text-gray-400 text-sm">Please select two dates to compare.</li>;
+                                            const d1 = p.trends[date1] as Record<string, number>;
+                                            const d2 = p.trends[date2] as Record<string, number>;
                                             if (!d1 || !d2)
                                                 return (
                                                     <li className="text-red-500 text-sm">

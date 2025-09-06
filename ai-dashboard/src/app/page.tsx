@@ -6,7 +6,13 @@ import Navigation from "../components/Navigation";
 // Type declarations for Chart.js
 declare global {
     interface Window {
-        Chart: any;
+        Chart: new (
+            context: CanvasRenderingContext2D,
+            config: any
+        ) => {
+            destroy: () => void;
+            [key: string]: any;
+        };
     }
 }
 
@@ -20,6 +26,30 @@ export default function Home() {
         script.type = "module";
         script.innerHTML = `(${function () {
             (function () {
+                // Define Patient type within this scope
+                type Patient = {
+                    id: string;
+                    name: string;
+                    age: number;
+                    gender: string;
+                    bloodGroup: string;
+                    disease: string;
+                    riskScore: number;
+                    riskLevel: "high" | "medium" | "low";
+                    symptoms: string[];
+                    familyHistory: string;
+                    bloodTest: Record<string, number>;
+                    boneMarrow?: Record<string, number>;
+                    genetics?: {
+                        mutations?: string[];
+                        chromosomal: string;
+                    };
+                    imaging?: string[];
+                    physicalExam?: string[];
+                    trends: Record<string, Record<string, number | string>>;
+                    drivers: { factor: string; influence: string }[];
+                    actions: string[];
+                };
                 const cohortView = document.getElementById("cohort-view");
                 const detailView = document.getElementById(
                     "patient-detail-view"
@@ -28,14 +58,6 @@ export default function Home() {
                     document.getElementById("comparison-view");
                 const patientList = document.getElementById("patient-list");
                 const backButton = document.getElementById("back-button");
-                const compareBackButton = document.getElementById(
-                    "compare-back-button"
-                );
-                const compareButton = document.getElementById("compare-button");
-                const compareDate1Input =
-                    document.getElementById("compare-date1");
-                const compareDate2Input =
-                    document.getElementById("compare-date2");
                 const comparisonPanels =
                     document.getElementById("comparison-panels");
                 const detailName = document.getElementById("detail-name");
@@ -44,9 +66,7 @@ export default function Home() {
                 const detailScore = document.getElementById("detail-score");
                 const detailActions = document.getElementById("detail-actions");
                 const detailDrivers = document.getElementById("detail-drivers");
-                const compareDaysButton = document.getElementById(
-                    "compare-days-button" // This is not used, but we'll leave it for now to match the logic.
-                );
+
                 const compareDay1Input = document.getElementById("compare-day1-input");
                 const compareDay2Input = document.getElementById("compare-day2-input");
                 const dayComparisonChartContainer = document.getElementById(
@@ -56,7 +76,7 @@ export default function Home() {
                     "day-comparison-text-container"
                 );
                 let dayComparisonChart: any;
-                let currentPatient: any;
+                let currentPatient: Patient | undefined;
                 const generateSummaryButton = document.getElementById(
                     "generate-summary-button"
                 );
@@ -73,14 +93,12 @@ export default function Home() {
                 const detailAge = document.getElementById("detail-age");
                 const detailBloodGroup =
                     document.getElementById("detail-blood-group");
-                const detailHeight = document.getElementById("detail-height");
-                const detailWeight = document.getElementById("detail-weight"); // This is not used, but we'll leave it for now to match the logic.
                 const detailDisease = document.getElementById("detail-disease");
 
-                const selectedPatients = new Set<string>();
+                const selectedPatients = new Set<string>(); // This is now managed by React state
                 let myChart: any; // Chart.js instance, 'any' is acceptable here.
 
-                const patients = [
+                const patients: Patient[] = [
                     {
                         id: "P-001",
                         name: "Priya Sharma", // Leukemia (AML)
@@ -357,7 +375,7 @@ export default function Home() {
                     },
                 ];
 
-                function generateMockTrendData(overrides: Record<string, number> = {}) {
+                function generateMockTrendData(overrides: Record<string, number> = {}): Record<string, Record<string, number | string>> {
                     const data: any = {};
                     for (let i = 89; i >= 0; i--) {
                         const date = new Date();
@@ -588,7 +606,7 @@ export default function Home() {
                 }
 
                 function renderPatientDetailView(id: string) {
-                    const patient: any = patients.find((p) => p.id === id);
+                    const patient = patients.find((p) => p.id === id);
                     if (!patient) return;
                     currentPatient = patient;
                     const color =
@@ -627,7 +645,7 @@ export default function Home() {
                             )
                             .join("");
                     if (detailDrivers)
-                        detailDrivers.innerHTML = (patient.drivers as {factor: string, influence: string}[])
+                        detailDrivers.innerHTML = patient.drivers
                             .map((driver) => {
                                 let driverColor = "text-gray-600";
                                 if (driver.influence.includes("high")) {
@@ -704,7 +722,7 @@ export default function Home() {
                 }
 
                 // New function to render detailed patient info
-                function renderFullPatientDetails(patient: Record<string, any>) {
+                function renderFullPatientDetails(patient: Patient) {
                     const detailGender =
                         document.getElementById("detail-gender");
                     const bloodTestList =
@@ -792,7 +810,7 @@ export default function Home() {
                 }
 
                 // New function to handle chart selection
-                function setupChartSelection(patient: Record<string, any>) {
+                function setupChartSelection(patient: Patient) {
                     const chartContainer =
                         document.getElementById("chart-container");
                     document
@@ -857,7 +875,7 @@ export default function Home() {
                     if (defaultChartButton) defaultChartButton.click();
                 }
 
-                function renderChart(data: Record<string, any>, days = 90) {
+                function renderChart(data: Patient['trends'], days = 90) {
                     if (myChart) {
                         myChart.destroy();
                     }
@@ -931,7 +949,7 @@ export default function Home() {
                 }
 
                 // New function for Blood Cell Count Chart
-                function renderBloodCellChart(trendsData: Record<string, any>, days = 90) {
+                function renderBloodCellChart(trendsData: Patient['trends'], days = 90) {
                     if (myChart) myChart.destroy();
 
                     const trendKeys = Object.keys(trendsData)
@@ -1011,7 +1029,7 @@ export default function Home() {
                 }
 
                 // New function for Lab Results Pie Chart
-                function renderLabResultsChart(trendsData: Record<string, any>, days = 90) {
+                function renderLabResultsChart(trendsData: Patient['trends'], days = 90) {
                     if (myChart) myChart.destroy();
 
                     const trendKeys = Object.keys(trendsData)
@@ -1097,7 +1115,7 @@ export default function Home() {
                     const patient1 = patients.find(
                         (p) => p.id === selectedPatientIds[0]
                     );
-                    const patient2: any = patients.find(
+                    const patient2 = patients.find(
                         (p) => p.id === selectedPatientIds[1]
                     );
                     [patient1, patient2].forEach((patient, index) => {
@@ -1148,7 +1166,7 @@ export default function Home() {
                         const vitalsList = document.getElementById(
                             `vitals-list-${patient.id}`
                         );
-                        const latestVitals = Object.values(
+                        const latestVitals: Record<string, number | string> | undefined = Object.values(
                             patient.trends
                         ).pop() as any;
                         if (vitalsList && latestVitals) {
@@ -1172,10 +1190,10 @@ export default function Home() {
                         if (chartCanvas) {
                             const labels = Object.keys(patient.trends);
                             const wbcData = labels.map(
-                                (key) => (patient.trends as any)[key].wbc
+                                (key) => (patient.trends[key] as Record<string, number>).wbc
                             );
                             const hemoglobinData = labels.map(
-                                (key) => (patient.trends as any)[key].hemoglobin
+                                (key) => (patient.trends[key] as Record<string, number>).hemoglobin
                             );
 
                             const chartInstance = new (window as any).Chart(
@@ -1253,15 +1271,6 @@ export default function Home() {
                     });
                 }
 
-                function renderDayComparison() { // This function is not used.
-                    const date1 = (compareDate1Input as HTMLInputElement)
-                        ?.value;
-                    const date2 = (compareDate2Input as HTMLInputElement)
-                        ?.value;
-                    if (!date1 || !date2) return;
-                    // This function is now handled by the new renderComparisonView logic
-                }
-
                 function renderSinglePatientComparison() {
                     const date1 = (compareDay1Input as HTMLInputElement)?.value;
                     const date2 = (compareDay2Input as HTMLInputElement)?.value;
@@ -1272,8 +1281,8 @@ export default function Home() {
                             dayComparisonTextContainer.classList.add("hidden");
                         return;
                     }
-                    const day1Data = currentPatient.trends[date1];
-                    const day2Data = currentPatient.trends[date2];
+                    const day1Data = currentPatient.trends[date1] as Record<string, number>;
+                    const day2Data = currentPatient.trends[date2] as Record<string, number>;
                     if (!day1Data || !day2Data) {
                         if (dayComparisonChartContainer)
                             dayComparisonChartContainer.classList.add("hidden");
@@ -1444,9 +1453,9 @@ export default function Home() {
                             if (aiContentContainer)
                                 aiContentContainer.classList.remove("hidden");
                             const vitals = Object.values(
-                                (currentPatient as any).trends
+                                currentPatient.trends
                             ).slice(-7);
-                            const drivers = (currentPatient as any).drivers.map((d: {factor: string, influence: string}) => `${d.factor} (${d.influence})`).join(', ');
+                            const drivers = currentPatient.drivers.map((d: {factor: string, influence: string}) => `${d.factor} (${d.influence})`).join(', ');
                             const prompt = `Act as a clinical AI assistant. Given the patient's data (age: ${
                                 currentPatient.age
                             }, disease: ${
@@ -1484,10 +1493,10 @@ export default function Home() {
                                 '<i class="fas fa-spinner fa-spin text-2xl text-gray-400"></i>'
                         if (aiContentContainer)
                             aiContentContainer.classList.remove("hidden");
-                        const drivers = (currentPatient as any).drivers
+                        const drivers = currentPatient.drivers
                             .map((d: {factor: string, influence: string}) => `${d.factor} (${d.influence})`)
                             .join(", ");
-                        const vitals = Object.values((currentPatient as any).trends)
+                        const vitals = Object.values(currentPatient.trends)
                             .slice(-1)
                             .map(
                                 (v: any) =>
