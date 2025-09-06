@@ -164,22 +164,22 @@ export default function PatientDetailPage() {
                                         day2Label={new Date(
                                             day2
                                         ).toLocaleDateString()}
-                                        day1Values={[
-                                            (patient as any).trends[day1]
+                                        day1Values={ patient.trends[day1] ? [
+                                            patient.trends[day1]
                                                 .blood_pressure,
-                                            (patient as any).trends[day1]
+                                            patient.trends[day1]
                                                 .blood_glucose,
-                                            (patient as any).trends[day1]
+                                            patient.trends[day1]
                                                 .resting_heart_rate,
-                                        ]}
-                                        day2Values={[
-                                            (patient as any).trends[day2]
+                                        ] : []}
+                                        day2Values={ patient.trends[day2] ? [
+                                            patient.trends[day2]
                                                 .blood_pressure,
-                                            (patient as any).trends[day2]
+                                            patient.trends[day2]
                                                 .blood_glucose,
-                                            (patient as any).trends[day2]
+                                            patient.trends[day2]
                                                 .resting_heart_rate,
-                                        ]}
+                                        ] : []}
                                     />
                                 </div>
                             ) : (
@@ -198,16 +198,16 @@ export default function PatientDetailPage() {
                                         const vitals = Object.values(
                                             (patient as any).trends
                                         ).slice(-7);
-                                        const drivers = (patient as any).drivers
+                                        const drivers = patient.drivers
                                             .map(
                                                 (d: any) =>
                                                     `${d.factor} (${d.influence})`
                                             )
                                             .join(", ");
                                         const prompt = `Act as a clinical AI assistant. Given the patient's data (age: ${
-                                            (patient as any).age
+                                            patient.age
                                         }, disease: ${
-                                            (patient as any).disease
+                                            patient.disease
                                         }), recent vitals (${JSON.stringify(
                                             vitals
                                         )}), and risk drivers (${drivers}), generate a concise, point-wise summary of their health status and the primary reasons for their elevated risk of deterioration in the next 90 days. Focus on actionable insights.`;
@@ -216,7 +216,7 @@ export default function PatientDetailPage() {
                                                 prompt
                                         );
                                     }}
-                                    className="w-full bg-sky-500 text-white px-4 py-2 rounded-lg font-semibold text-sm hover:bg-sky-600 transition-colors duration-200">
+                                    className="w-full bg-sky-500 text-white px-4 py-2 rounded-lg font-semibold text-sm hover:bg-sky-600 transition-colors duration-200 flex items-center justify-center space-x-2">
                                     ✨Generate Clinical Summary✨
                                 </button>
                                 <button
@@ -230,10 +230,10 @@ export default function PatientDetailPage() {
                                         const v = Object.values(
                                             (patient as any).trends
                                         ).slice(-1)[0] as any;
-                                        const prompt = `Act as a healthcare consultant. Based on the patient's data (disease: ${
-                                            (patient as any).disease
+                                        const prompt = `Act as a healthcare consultant. Based on the patient's data (disease: ${ 
+                                            patient.disease
                                         }, risk score: ${(
-                                            (patient as any).riskScore * 100
+                                            patient.riskScore * 100
                                         ).toFixed(
                                             0
                                         )}%), which includes a high risk score due to ${drivers}, and recent vitals of Blood Pressure: ${
@@ -246,7 +246,7 @@ export default function PatientDetailPage() {
                                                 prompt
                                         );
                                     }}
-                                    className="w-full bg-emerald-500 text-white px-4 py-2 rounded-lg font-semibold text-sm hover:bg-emerald-600 transition-colors duration-200">
+                                    className="w-full bg-emerald-500 text-white px-4 py-2 rounded-lg font-semibold text-sm hover:bg-emerald-600 transition-colors duration-200 flex items-center justify-center space-x-2">
                                     ✨Generate Smart Action Plan✨
                                 </button>
                             </div>

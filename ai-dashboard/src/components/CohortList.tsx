@@ -23,7 +23,7 @@ export function CohortList({
             </h2>
             <div className="flex items-center justify-between mb-4">
                 <p className="text-gray-500 text-sm">
-                    Select patients for comparison and click "Compare".
+                    Select patients for comparison and click &quot;Compare&quot;.
                 </p>
                 <button
                     id="compare-button"

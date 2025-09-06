@@ -100,8 +100,8 @@ export default function ComparePatientsPage() {
                                         {(() => {
                                             if (!date1 || !date2 || !p)
                                                 return null;
-                                            const d1 = (p as any).trends[date1];
-                                            const d2 = (p as any).trends[date2];
+                                            const d1 = p.trends[date1];
+                                            const d2 = p.trends[date2];
                                             if (!d1 || !d2)
                                                 return (
                                                     <li className="text-red-500 text-sm">

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Navigation from "../components/Navigation";
 
 // Type declarations for Chart.js
@@ -11,6 +11,8 @@ declare global {
 }
 
 export default function Home() {
+    const [isClient, setIsClient] = useState(false);
+
     useEffect(() => {
         // The original script relies on DOMContentLoaded. In Next.js client components,
         // the DOM is already available here.
@@ -43,12 +45,10 @@ export default function Home() {
                 const detailActions = document.getElementById("detail-actions");
                 const detailDrivers = document.getElementById("detail-drivers");
                 const compareDaysButton = document.getElementById(
-                    "compare-days-button"
+                    "compare-days-button" // This is not used, but we'll leave it for now to match the logic.
                 );
-                const compareDay1Input =
-                    document.getElementById("compare-day1-input");
-                const compareDay2Input =
-                    document.getElementById("compare-day2-input");
+                const compareDay1Input = document.getElementById("compare-day1-input");
+                const compareDay2Input = document.getElementById("compare-day2-input");
                 const dayComparisonChartContainer = document.getElementById(
                     "day-comparison-chart-container"
                 );
@@ -74,11 +74,11 @@ export default function Home() {
                 const detailBloodGroup =
                     document.getElementById("detail-blood-group");
                 const detailHeight = document.getElementById("detail-height");
-                const detailWeight = document.getElementById("detail-weight");
+                const detailWeight = document.getElementById("detail-weight"); // This is not used, but we'll leave it for now to match the logic.
                 const detailDisease = document.getElementById("detail-disease");
 
-                let selectedPatients = new Set<string>();
-                let myChart: any;
+                const selectedPatients = new Set<string>();
+                let myChart: any; // Chart.js instance, 'any' is acceptable here.
 
                 const patients = [
                     {
@@ -357,7 +357,7 @@ export default function Home() {
                     },
                 ];
 
-                function generateMockTrendData(overrides: any = {}) {
+                function generateMockTrendData(overrides: Record<string, number> = {}) {
                     const data: any = {};
                     for (let i = 89; i >= 0; i--) {
                         const date = new Date();
@@ -588,7 +588,7 @@ export default function Home() {
                 }
 
                 function renderPatientDetailView(id: string) {
-                    const patient = patients.find((p) => p.id === id);
+                    const patient: any = patients.find((p) => p.id === id);
                     if (!patient) return;
                     currentPatient = patient;
                     const color =
@@ -608,8 +608,7 @@ export default function Home() {
                     if (detailIcon) detailIcon.className = icon + " " + color;
                     if (detailScore)
                         detailScore.textContent = `${(
-                            patient.riskScore * 100
-                        ).toFixed(0)}%`;
+                            patient.riskScore * 100 ).toFixed(0)}%`;
                     if (detailAge)
                         detailAge.textContent = patient.age.toString();
                     if (detailBloodGroup)
@@ -617,7 +616,7 @@ export default function Home() {
                     if (detailDisease)
                         detailDisease.textContent = patient.disease;
                     if (detailActions)
-                        detailActions.innerHTML = patient.actions
+                        detailActions.innerHTML = (patient.actions as string[])
                             .map(
                                 (action) => `
             <li class="flex items-start space-x-2">
@@ -628,7 +627,7 @@ export default function Home() {
                             )
                             .join("");
                     if (detailDrivers)
-                        detailDrivers.innerHTML = patient.drivers
+                        detailDrivers.innerHTML = (patient.drivers as {factor: string, influence: string}[])
                             .map((driver) => {
                                 let driverColor = "text-gray-600";
                                 if (driver.influence.includes("high")) {
@@ -705,7 +704,7 @@ export default function Home() {
                 }
 
                 // New function to render detailed patient info
-                function renderFullPatientDetails(patient: any) {
+                function renderFullPatientDetails(patient: Record<string, any>) {
                     const detailGender =
                         document.getElementById("detail-gender");
                     const bloodTestList =
@@ -793,7 +792,7 @@ export default function Home() {
                 }
 
                 // New function to handle chart selection
-                function setupChartSelection(patient: any) {
+                function setupChartSelection(patient: Record<string, any>) {
                     const chartContainer =
                         document.getElementById("chart-container");
                     document
@@ -858,7 +857,7 @@ export default function Home() {
                     if (defaultChartButton) defaultChartButton.click();
                 }
 
-                function renderChart(data: any, days = 90) {
+                function renderChart(data: Record<string, any>, days = 90) {
                     if (myChart) {
                         myChart.destroy();
                     }
@@ -932,7 +931,7 @@ export default function Home() {
                 }
 
                 // New function for Blood Cell Count Chart
-                function renderBloodCellChart(trendsData: any, days = 90) {
+                function renderBloodCellChart(trendsData: Record<string, any>, days = 90) {
                     if (myChart) myChart.destroy();
 
                     const trendKeys = Object.keys(trendsData)
@@ -1012,7 +1011,7 @@ export default function Home() {
                 }
 
                 // New function for Lab Results Pie Chart
-                function renderLabResultsChart(trendsData: any, days = 90) {
+                function renderLabResultsChart(trendsData: Record<string, any>, days = 90) {
                     if (myChart) myChart.destroy();
 
                     const trendKeys = Object.keys(trendsData)
@@ -1098,7 +1097,7 @@ export default function Home() {
                     const patient1 = patients.find(
                         (p) => p.id === selectedPatientIds[0]
                     );
-                    const patient2 = patients.find(
+                    const patient2: any = patients.find(
                         (p) => p.id === selectedPatientIds[1]
                     );
                     [patient1, patient2].forEach((patient, index) => {
@@ -1254,7 +1253,7 @@ export default function Home() {
                     });
                 }
 
-                function renderDayComparison() {
+                function renderDayComparison() { // This function is not used.
                     const date1 = (compareDate1Input as HTMLInputElement)
                         ?.value;
                     const date2 = (compareDate2Input as HTMLInputElement)
@@ -1445,11 +1444,9 @@ export default function Home() {
                             if (aiContentContainer)
                                 aiContentContainer.classList.remove("hidden");
                             const vitals = Object.values(
-                                currentPatient.trends
+                                (currentPatient as any).trends
                             ).slice(-7);
-                            const drivers = currentPatient.drivers
-                                .map((d: any) => `${d.factor} (${d.influence})`)
-                                .join(", ");
+                            const drivers = (currentPatient as any).drivers.map((d: {factor: string, influence: string}) => `${d.factor} (${d.influence})`).join(', ');
                             const prompt = `Act as a clinical AI assistant. Given the patient's data (age: ${
                                 currentPatient.age
                             }, disease: ${
@@ -1484,13 +1481,13 @@ export default function Home() {
                                 "Generating Smart Action Plan...";
                         if (aiContentText)
                             aiContentText.innerHTML =
-                                '<i class="fas fa-spinner fa-spin text-2xl text-gray-400"></i>';
+                                '<i class="fas fa-spinner fa-spin text-2xl text-gray-400"></i>'
                         if (aiContentContainer)
                             aiContentContainer.classList.remove("hidden");
-                        const drivers = currentPatient.drivers
-                            .map((d: any) => `${d.factor} (${d.influence})`)
+                        const drivers = (currentPatient as any).drivers
+                            .map((d: {factor: string, influence: string}) => `${d.factor} (${d.influence})`)
                             .join(", ");
-                        const vitals = Object.values(currentPatient.trends)
+                        const vitals = Object.values((currentPatient as any).trends)
                             .slice(-1)
                             .map(
                                 (v: any) =>
@@ -1546,9 +1543,14 @@ export default function Home() {
         return () => {
             script.remove();
         };
+    }, [isClient]);
+
+    useEffect(() => {
+        setIsClient(true);
     }, []);
 
     return (
+        isClient && (
         <div className="bg-slate-50 min-h-screen w-full">
             <Navigation />
             <div className="bg-white overflow-hidden w-full transition-all duration-300">
@@ -1910,5 +1912,6 @@ export default function Home() {
                 </main>
             </div>
         </div>
+        )
     );
 }
