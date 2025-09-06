@@ -222,32 +222,32 @@
             // 1. Generate Mock Dataset
             const patients = [
                 {
-                    id: 'P-001', name: 'Jane Doe', age: 65, bloodGroup: 'A+', height: '165 cm', weight: '75 kg', disease: 'Type 2 Diabetes', riskScore: 0.85, riskLevel: 'high', trends: generateMockTrendData(),
+                    id: 'P-001', name: 'Aditi Sharma', age: 65, bloodGroup: 'A+', height: '165 cm', weight: '75 kg', disease: 'Type 2 Diabetes', riskScore: 0.85, riskLevel: 'high', trends: generateMockTrendData(),
                     drivers: [{ factor: 'Recent A1C Spike', influence: 'high' }, { factor: 'Missed Meds', influence: 'high' }],
                     actions: ['Flag for immediate follow-up', 'Review medication adherence', 'Schedule urgent check-up']
                 },
                 {
-                    id: 'P-002', name: 'John Smith', age: 48, bloodGroup: 'O-', height: '180 cm', weight: '88 kg', disease: 'Hypertension', riskScore: 0.22, riskLevel: 'low', trends: generateMockTrendData(120, 15),
+                    id: 'P-002', name: 'Rajesh Kumar', age: 48, bloodGroup: 'O-', height: '180 cm', weight: '88 kg', disease: 'Hypertension', riskScore: 0.22, riskLevel: 'low', trends: generateMockTrendData(120, 15),
                     drivers: [{ factor: 'Consistent Blood Glucose', influence: 'high-negative' }, { factor: '100% Med Adherence', influence: 'high-negative' }],
                     actions: ['Continue routine monitoring', 'Encourage healthy habits']
                 },
                 {
-                    id: 'P-003', name: 'Michael Chen', age: 55, bloodGroup: 'B+', height: '175 cm', weight: '92 kg', disease: 'Heart Failure', riskScore: 0.58, riskLevel: 'medium', trends: generateMockTrendData(140, 20),
+                    id: 'P-003', name: 'Rohan Mehta', age: 55, bloodGroup: 'B+', height: '175 cm', weight: '92 kg', disease: 'Heart Failure', riskScore: 0.58, riskLevel: 'medium', trends: generateMockTrendData(140, 20),
                     drivers: [{ factor: 'Fluctuating Systolic BP', influence: 'high' }, { factor: 'Increased Sodium Intake', influence: 'medium' }],
                     actions: ['Send automated lifestyle tip', 'Schedule follow-up with nutritionist', 'Alert care team to review BP']
                 },
                 {
-                    id: 'P-004', name: 'Sarah Lee', age: 72, bloodGroup: 'AB+', height: '160 cm', weight: '68 kg', disease: 'COPD', riskScore: 0.71, riskLevel: 'high', trends: generateMockTrendData(90, 5),
+                    id: 'P-004', name: 'Ananya Gupta', age: 72, bloodGroup: 'AB+', height: '160 cm', weight: '68 kg', disease: 'COPD', riskScore: 0.71, riskLevel: 'high', trends: generateMockTrendData(90, 5),
                     drivers: [{ factor: 'Elevated Resting Heart Rate', influence: 'high' }, { factor: 'Sleep Irregularity', influence: 'medium' }],
                     actions: ['Recommend cardio assessment', 'Suggest sleep hygiene review', 'Review recent vitals for patterns']
                 },
                 {
-                    id: 'P-005', name: 'David Kim', age: 39, bloodGroup: 'A-', height: '178 cm', weight: '79 kg', disease: 'Obesity', riskScore: 0.35, riskLevel: 'low', trends: generateMockTrendData(110, 10),
+                    id: 'P-005', name: 'Sanjay Verma', age: 39, bloodGroup: 'A-', height: '178 cm', weight: '79 kg', disease: 'Obesity', riskScore: 0.35, riskLevel: 'low', trends: generateMockTrendData(110, 10),
                     drivers: [{ factor: 'Stable Weight', influence: 'medium-negative' }, { factor: 'Consistent Activity Logs', influence: 'high-negative' }],
                     actions: ['Continue monitoring', 'Congratulate on progress']
                 },
                 {
-                    id: 'P-006', name: 'Emily White', age: 61, bloodGroup: 'O+', height: '170 cm', weight: '85 kg', disease: 'Kidney Disease', riskScore: 0.65, riskLevel: 'medium', trends: generateMockTrendData(150, 25),
+                    id: 'P-006', name: 'Pooja Desai', age: 61, bloodGroup: 'O+', height: '170 cm', weight: '85 kg', disease: 'Kidney Disease', riskScore: 0.65, riskLevel: 'medium', trends: generateMockTrendData(150, 25),
                     drivers: [{ factor: 'Weight Gain (last 30 days)', influence: 'high' }, { factor: 'Occasional High Glucose Spikes', influence: 'medium' }],
                     actions: ['Refer to registered dietitian', 'Advise on meal planning']
                 }

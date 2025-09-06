@@ -22,7 +22,7 @@ export function generateMockTrendData(base = 100, deviation = 10) {
 export const patientsMock: Patient[] = [
     {
         id: "P-001",
-        name: "Jane Doe",
+        name: "Aditi Sharma",
         age: 65,
         bloodGroup: "A+",
         height: "165 cm",
@@ -43,7 +43,7 @@ export const patientsMock: Patient[] = [
     },
     {
         id: "P-002",
-        name: "John Smith",
+        name: "Rajesh Kumar",
         age: 48,
         bloodGroup: "O-",
         height: "180 cm",
@@ -60,7 +60,7 @@ export const patientsMock: Patient[] = [
     },
     {
         id: "P-003",
-        name: "Michael Chen",
+        name: "Rohan Mehta",
         age: 55,
         bloodGroup: "B+",
         height: "175 cm",
@@ -81,7 +81,7 @@ export const patientsMock: Patient[] = [
     },
     {
         id: "P-004",
-        name: "Sarah Lee",
+        name: "Ananya Gupta",
         age: 72,
         bloodGroup: "AB+",
         height: "160 cm",
@@ -102,7 +102,7 @@ export const patientsMock: Patient[] = [
     },
     {
         id: "P-005",
-        name: "David Kim",
+        name: "Sanjay Verma",
         age: 39,
         bloodGroup: "A-",
         height: "178 cm",
@@ -119,7 +119,7 @@ export const patientsMock: Patient[] = [
     },
     {
         id: "P-006",
-        name: "Emily White",
+        name: "Pooja Desai",
         age: 61,
         bloodGroup: "O+",
         height: "170 cm",
