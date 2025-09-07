@@ -1,0 +1,102 @@
+@import "tailwindcss";
+
+:root {
+  --background: #0b1020; /* deep blue background */
+  --foreground: #e6e8ef; /* near-white foreground */
+  --brand: #2563eb;      /* primary blue */
+  --brand-600: #1d4ed8;
+  --brand-700: #1e40af;
+  --muted: #0f172a;      /* panel/card bg */
+  --border: #1f2a44;     /* border color */
+  --success: #16a34a;
+  --warn: #f59e0b;
+  --danger: #ef4444;
+  --input-bg: #0e1830;
+  --input-text: var(--foreground);
+  --input-border: var(--border);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+/* Light theme (via data attribute) */
+[data-theme="light"] {
+  --background: #f8fafc;
+  --foreground: #0b1220;
+  --muted: #ffffff;
+  --border: #dbe2ea;
+  --input-bg: #ffffff;
+  --input-text: #0b1220;
+  --input-border: #c4cfdb;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+::selection { background: color-mix(in srgb, var(--brand) 35%, transparent); color: var(--foreground); }
+
+.card {
+  @apply rounded-xl border backdrop-blur p-4 shadow-sm;
+  background: var(--muted);
+  border-color: var(--border);
+}
+
+.badge {
+  @apply inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-xs font-medium;
+}
+
+.badge-high {
+  color: #fee2e2;
+  background: color-mix(in srgb, var(--danger) 20%, transparent);
+  border: 1px solid color-mix(in srgb, var(--danger) 40%, transparent);
+}
+.badge-medium {
+  color: #fffbeb;
+  background: color-mix(in srgb, var(--warn) 18%, transparent);
+  border: 1px solid color-mix(in srgb, var(--warn) 36%, transparent);
+}
+.badge-low {
+  color: #ecfdf5;
+  background: color-mix(in srgb, var(--success) 16%, transparent);
+  border: 1px solid color-mix(in srgb, var(--success) 32%, transparent);
+}
+
+.btn {
+  @apply inline-flex items-center justify-center px-3 py-2 rounded-md text-sm font-medium border transition-colors;
+  background: color-mix(in srgb, var(--brand) 60%, transparent);
+  color: #ffffff;
+  border-color: color-mix(in srgb, var(--brand) 40%, transparent);
+}
+.btn:hover { background: color-mix(in srgb, var(--brand) 70%, transparent); }
+.btn:disabled { opacity: .5; cursor: not-allowed; }
+
+.link { @apply underline-offset-4; }
+.link:hover { text-decoration: underline; }
+
+.nav {
+  background: linear-gradient(180deg, color-mix(in srgb, var(--muted) 85%, transparent), transparent);
+  border-color: var(--border);
+}
+
+/* Accessibility */
+:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
+button:focus-visible, a:focus-visible { box-shadow: 0 0 0 2px color-mix(in srgb, var(--brand) 50%, transparent); border-radius: 6px; }
+
+/* Inputs */
+.input {
+  @apply text-sm rounded-md border;
+  background: var(--input-bg);
+  color: var(--input-text);
+  border-color: var(--input-border);
+  padding: 0.5rem 0.75rem;
+}
+.input::placeholder { color: color-mix(in srgb, var(--input-text) 55%, transparent); }
+.input:focus { outline: none; border-color: var(--brand-600); box-shadow: 0 0 0 2px color-mix(in srgb, var(--brand) 35%, transparent); }
+select.input option { color: initial; }
