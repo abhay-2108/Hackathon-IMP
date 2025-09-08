@@ -76,48 +76,52 @@ export default function PatientDetail({ patientId }) {
             { name: "Platelets", data: patient.vitals.platelets },
           ]} />
         </div>
-        <div className="card">
-          <div className="font-medium mb-2">Blood Counts (avg)</div>
-          <SimpleBarChart labels={["RBC","Hemoglobin","Platelets"]} values={[avg(patient.vitals.rbc), avg(patient.vitals.hb), avg(patient.vitals.platelets)]} />
-        </div>
+        {false && (
+          <div className="card">
+            <div className="font-medium mb-2">Blood Counts (avg)</div>
+            <SimpleBarChart labels={["RBC","Hemoglobin","Platelets"]} values={[avg(patient.vitals.rbc), avg(patient.vitals.hb), avg(patient.vitals.platelets)]} />
+          </div>
+        )}
         <div className="card">
           <div className="font-medium mb-2">Lab Results</div>
           <SimplePieChart labels={["LDH","Calcium","Albumin"]} values={[patient.labs.ldh, patient.labs.calcium, patient.labs.albumin]} />
         </div>
-        <div className="card">
-          <div className="font-medium">Day-by-Day Vitals Comparison</div>
-          <div className="flex items-center gap-2 mt-2 text-sm">
-            <select className="input" value={dateA} onChange={(e) => setDateA(e.target.value)}>
-              {patient.vitals.dates.map(d => <option key={d} value={d}>{d}</option>)}
-            </select>
-            <span>vs</span>
-            <select className="input" value={dateB} onChange={(e) => setDateB(e.target.value)}>
-              {patient.vitals.dates.map(d => <option key={d} value={d}>{d}</option>)}
-            </select>
+        {false && (
+          <div className="card">
+            <div className="font-medium">Day-by-Day Vitals Comparison</div>
+            <div className="flex items-center gap-2 mt-2 text-sm">
+              <select className="input" value={dateA} onChange={(e) => setDateA(e.target.value)}>
+                {patient.vitals.dates.map(d => <option key={d} value={d}>{d}</option>)}
+              </select>
+              <span>vs</span>
+              <select className="input" value={dateB} onChange={(e) => setDateB(e.target.value)}>
+                {patient.vitals.dates.map(d => <option key={d} value={d}>{d}</option>)}
+              </select>
+            </div>
+            <div className="mt-3">
+              {patient.vitals?.wbc && patient.vitals?.platelets && patient.vitals?.hb ? (
+                <>
+                  <SimpleBarChart labels={["WBC","Platelets","Hemoglobin"]} values={[
+                    safeDiff(patient.vitals.wbc),
+                    safeDiff(patient.vitals.platelets),
+                    safeDiff(patient.vitals.hb),
+                  ]} />
+                  <div className="text-xs opacity-75 mt-2">
+                    WBC: {deltaText(compare(patient.vitals.wbc))} • Platelets: {deltaText(compare(patient.vitals.platelets))} • Hb: {deltaText(compare(patient.vitals.hb))}
+                  </div>
+                  <div className="text-xs opacity-75 mt-2">
+                    <span className="font-medium">{dateA}</span> vs <span className="font-medium">{dateB}</span>
+                    <span className="ml-2">WBC {valAt(patient.vitals.wbc, idxA)} → {valAt(patient.vitals.wbc, idxB)}</span>
+                    <span className="ml-2">Plt {valAt(patient.vitals.platelets, idxA)} → {valAt(patient.vitals.platelets, idxB)}</span>
+                    <span className="ml-2">Hb {valAt(patient.vitals.hb, idxA)} → {valAt(patient.vitals.hb, idxB)}</span>
+                  </div>
+                </>
+              ) : (
+                <div className="text-sm opacity-75">No day-by-day vitals available.</div>
+              )}
+            </div>
           </div>
-          <div className="mt-3">
-            {patient.vitals?.wbc && patient.vitals?.platelets && patient.vitals?.hb ? (
-              <>
-                <SimpleBarChart labels={["WBC","Platelets","Hemoglobin"]} values={[
-                  safeDiff(patient.vitals.wbc),
-                  safeDiff(patient.vitals.platelets),
-                  safeDiff(patient.vitals.hb),
-                ]} />
-                <div className="text-xs opacity-75 mt-2">
-                  WBC: {deltaText(compare(patient.vitals.wbc))} • Platelets: {deltaText(compare(patient.vitals.platelets))} • Hb: {deltaText(compare(patient.vitals.hb))}
-                </div>
-                <div className="text-xs opacity-75 mt-2">
-                  <span className="font-medium">{dateA}</span> vs <span className="font-medium">{dateB}</span>
-                  <span className="ml-2">WBC {valAt(patient.vitals.wbc, idxA)} → {valAt(patient.vitals.wbc, idxB)}</span>
-                  <span className="ml-2">Plt {valAt(patient.vitals.platelets, idxA)} → {valAt(patient.vitals.platelets, idxB)}</span>
-                  <span className="ml-2">Hb {valAt(patient.vitals.hb, idxA)} → {valAt(patient.vitals.hb, idxB)}</span>
-                </div>
-              </>
-            ) : (
-              <div className="text-sm opacity-75">No day-by-day vitals available.</div>
-            )}
-          </div>
-        </div>
+        )}
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
