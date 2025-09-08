@@ -8,7 +8,7 @@ export async function POST(request) {
     const script = process.cwd() + "/python/predict.py";
 
     const result = await new Promise((resolve) => {
-      const child = spawn(py, [script], { stdio: ["pipe", "pipe", "pipe"] });
+      const child = spawn(py, [script], { stdio: ["pipe", "pipe", "pipe"], env: { ...process.env, PYTHONPATH: (process.env.PYTHONPATH ? process.env.PYTHONPATH + ":" : "") + (process.cwd() + "/python_modules") } });
       let out = "";
       let err = "";
       child.stdout.on("data", (d) => (out += d.toString()));
