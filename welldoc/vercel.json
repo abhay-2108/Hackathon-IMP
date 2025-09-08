@@ -2,7 +2,9 @@
 	"installCommand": "(npm install) && (python3 -m pip install --upgrade pip) && (python3 -m pip install -r requirements.txt -t python_modules)",
 	"buildCommand": "npm run build",
 	"functions": {
-		"runtime": "nodejs22.x"
+		"app/api/**": {
+			"runtime": "nodejs22.x"
+		}
 	},
 	"env": {
 		"PYTHON_PATH": "python3",
